@@ -1,10 +1,10 @@
 # File Integrity Monitor
 
-A comprehensive Python-based file integrity monitoring system designed for educational cybersecurity purposes. This tool helps cybersecurity professionals and enthusiasts understand file system security, intrusion detection, and data integrity concepts.
+A Python-based file integrity monitoring system that continuously watches specified directories and files for unauthorized changes. Uses cryptographic hashing, file metadata analysis, and real-time monitoring to detect potential tampering or malicious activities.
 
 ## Description
 
-The File Integrity Monitor is a security tool that continuously watches specified directories and files for any unauthorized changes. It uses cryptographic hashing, file metadata analysis, and real-time monitoring to detect potential tampering or malicious activities.
+The File Integrity Monitor is a security tool that monitors file system changes using hash-based verification and real-time file system events. It creates baseline snapshots of monitored directories and alerts users to any modifications, additions, or deletions.
 
 ## Features
 
@@ -21,28 +21,31 @@ The File Integrity Monitor is a security tool that continuously watches specifie
 
 - Python 3.7+
 - Required Python packages:
-  - `watchdog>=2.1.0` (for real-time monitoring)
-  - `hashlib` (built-in)
-  - `os` (built-in)
-  - `json` (built-in)
-  - `logging` (built-in)
-  - `datetime` (built-in)
-  - `argparse` (built-in)
+  - watchdog>=2.1.0 (for real-time monitoring)
+  - hashlib (built-in)
+  - os (built-in)
+  - json (built-in)
+  - logging (built-in)
+  - datetime (built-in)
+  - argparse (built-in)
 
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/hadhiabdulla/File-Integrity-Monitor.git
 cd File-Integrity-Monitor
 ```
 
 2. Install Python dependencies:
+
 ```bash
 pip install watchdog
 ```
 
 3. Make scripts executable (Linux/macOS):
+
 ```bash
 chmod +x fim.py
 ```
@@ -52,6 +55,7 @@ chmod +x fim.py
 ### Basic Usage
 
 #### Create Initial Baseline
+
 ```bash
 # Create baseline for current directory
 python fim.py --create-baseline
@@ -61,6 +65,7 @@ python fim.py -d /path/to/monitor --create-baseline
 ```
 
 #### Check File Integrity
+
 ```bash
 # Check integrity against baseline for current directory
 python fim.py --check
@@ -70,6 +75,7 @@ python fim.py -d /path/to/monitor --check
 ```
 
 #### Real-time Monitoring
+
 ```bash
 # Start real-time monitoring (requires watchdog)
 python fim.py --real-time
@@ -139,15 +145,6 @@ File Integrity Monitor v1.0
 [2025-08-27 12:48:20] WARNING: MODIFIED: /home/user/documents/config.ini
 ```
 
-## Educational Purpose
-
-This tool helps cybersecurity professionals and enthusiasts understand:
-- **File System Security**: Learn how files can be monitored and protected
-- **Cryptographic Hashing**: Understand hash functions and their security applications
-- **Intrusion Detection**: Grasp the principles of detecting unauthorized system changes
-- **Incident Response**: Practice responding to detected security events
-- **Digital Forensics**: Learn to maintain audit trails and analyze security incidents
-
 ## Security Considerations
 
 ⚠️ **Important Security Notes**
@@ -167,6 +164,7 @@ This tool helps cybersecurity professionals and enthusiasts understand:
 ## Contributing
 
 Contributions are welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes with proper documentation
@@ -177,13 +175,10 @@ Contributions are welcome! Please:
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Disclaimer
-
-**EDUCATIONAL USE ONLY**: This software is provided for educational and authorized monitoring purposes only. Users are responsible for obtaining proper authorization before monitoring any systems and complying with all applicable laws and regulations.
-
 ## Contact
 
-For questions, issues, or educational inquiries:
+For questions or issues:
+
 - Open an issue on GitHub
 - Check the documentation wiki
 - Review existing issues before posting
