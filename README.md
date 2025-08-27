@@ -1,6 +1,6 @@
 # File Integrity Monitor
 
-A comprehensive Python-based file integrity monitoring system designed for educational cybersecurity purposes. This tool helps B.Tech CSE students understand file system security, intrusion detection, and data integrity concepts.
+A comprehensive Python-based file integrity monitoring system designed for educational cybersecurity purposes. This tool helps cybersecurity professionals and enthusiasts understand file system security, intrusion detection, and data integrity concepts.
 
 ## Description
 
@@ -14,14 +14,14 @@ The File Integrity Monitor is a security tool that continuously watches specifie
 - **Recursive Directory Scanning**: Monitors nested directories and subdirectories
 - **Real-time Console Alerts**: Immediate notifications of detected changes
 - **Detailed Log Files**: Comprehensive logging with timestamps and details
-- **HTML Reports**: Generate formatted reports for analysis
-- **Email Notifications**: Send alerts via email (configurable)
+- **Report Generation**: Generate text and JSON formatted reports for analysis
+- **File Pattern Filtering**: Include/exclude files based on patterns
 
 ## Requirements
 
 - Python 3.7+
 - Required Python packages:
-  - `watchdog>=2.1.0`
+  - `watchdog>=2.1.0` (for real-time monitoring)
   - `hashlib` (built-in)
   - `os` (built-in)
   - `json` (built-in)
@@ -39,7 +39,7 @@ cd File-Integrity-Monitor
 
 2. Install Python dependencies:
 ```bash
-pip install -r requirements.txt
+pip install watchdog
 ```
 
 3. Make scripts executable (Linux/macOS):
@@ -51,73 +51,72 @@ chmod +x fim.py
 
 ### Basic Usage
 
+#### Create Initial Baseline
 ```bash
-# Monitor current directory
-python fim.py
+# Create baseline for current directory
+python fim.py --create-baseline
 
-# Monitor specific directory
-python fim.py -d /path/to/monitor
-
-# Create initial baseline
+# Create baseline for specific directory
 python fim.py -d /path/to/monitor --create-baseline
+```
 
-# Run monitoring with existing baseline
-python fim.py -d /path/to/monitor --use-baseline
+#### Check File Integrity
+```bash
+# Check integrity against baseline for current directory
+python fim.py --check
+
+# Check integrity for specific directory
+python fim.py -d /path/to/monitor --check
+```
+
+#### Real-time Monitoring
+```bash
+# Start real-time monitoring (requires watchdog)
+python fim.py --real-time
+
+# Monitor specific directory in real-time
+python fim.py -d /path/to/monitor --real-time
 ```
 
 ### Advanced Usage
 
 ```bash
 # Monitor with specific hash algorithm
-python fim.py -d /path/to/monitor --hash sha256
-
-# Enable email notifications
-python fim.py -d /path/to/monitor --email
+python fim.py -d /path/to/monitor --hash sha256 --check
 
 # Monitor with file filtering
-python fim.py -d /path/to/monitor --include "*.txt,*.doc" --exclude "*.tmp,*.log"
+python fim.py -d /path/to/monitor --include "*.txt,*.doc" --exclude "*.tmp,*.log" --check
 
 # Generate reports
-python fim.py -d /path/to/monitor --report-format html --output report.html
+python fim.py -d /path/to/monitor --check --output report.txt
+python fim.py -d /path/to/monitor --check --output report.json --report-format json
 
-# Real-time monitoring with verbose output
-python fim.py -d /path/to/monitor --real-time --verbose
+# Verbose monitoring
+python fim.py -d /path/to/monitor --check --verbose
 ```
 
 ## Command Line Options
 
-- `-d, --directory`: Directory/directories to monitor
-- `-c, --config`: Configuration file path
+- `-d, --directory`: Directory to monitor (default: current directory)
+- `--hash`: Hash algorithm (md5, sha1, sha256) - default: sha256
 - `-v, --verbose`: Enable verbose logging
-- `--hash`: Hash algorithm (md5, sha1, sha256)
-- `--real-time`: Enable real-time monitoring
-- `--interval`: Scan interval in seconds
-- `--include`: File patterns to include
-- `--exclude`: File patterns to exclude
+- `--baseline`: Baseline file path (default: fim_baseline.json)
+- `--include`: File patterns to include (comma-separated)
+- `--exclude`: File patterns to exclude (comma-separated)
 - `--create-baseline`: Create new baseline
-- `--use-baseline`: Use existing baseline
-- `-o, --output`: Output file path
-- `--report-format`: Report format (text, html, json, csv)
+- `--check`: Check integrity against baseline
+- `--real-time`: Start real-time monitoring
+- `-o, --output`: Output file for reports
+- `--report-format`: Report format (text, json) - default: text
 
 ## File Structure
 
 ```
 File-Integrity-Monitor/
 ├── fim.py                   # Main monitoring script
-├── lib/                     # Core library modules
-│   ├── monitor.py           # File monitoring engine
-│   ├── hasher.py            # Hash calculation utilities
-│   ├── baseline.py          # Baseline management
-│   ├── reporter.py          # Report generation
-│   └── utils.py             # Utility functions
-├── config/                  # Configuration files
-├── data/                    # Data storage
-│   ├── baselines/           # Baseline files
-│   ├── logs/                # Log files
-│   └── reports/             # Generated reports
-├── tests/                   # Unit tests
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
+├── fim_baseline.json        # Baseline file (created automatically)
+├── README.md               # This file
+└── .gitignore              # Git ignore file
 ```
 
 ## How It Works
@@ -125,23 +124,24 @@ File-Integrity-Monitor/
 1. **Baseline Creation**: Creates cryptographic fingerprints of monitored files
 2. **Continuous Monitoring**: Uses file system events to detect changes
 3. **Change Detection**: Compares current state against baseline
-4. **Alerting and Reporting**: Logs changes and sends notifications
+4. **Alerting and Reporting**: Logs changes and generates reports
 
 ## Sample Output
 
 ```
+File Integrity Monitor v1.0
+===========================
 [2025-08-27 12:47:32] INFO: File Integrity Monitor Started
-[2025-08-27 12:47:32] INFO: Monitoring directory: /home/user/documents
+[2025-08-27 12:47:32] INFO: Scanning directory: /home/user/documents
 [2025-08-27 12:47:32] INFO: Baseline loaded: 1,247 files
-[2025-08-27 12:47:45] WARNING: File modified: /home/user/documents/important.txt
-[2025-08-27 12:48:12] CRITICAL: File deleted: /home/user/documents/secret.key
-[2025-08-27 12:48:20] WARNING: New file created: /home/user/documents/unknown.exe
+[2025-08-27 12:47:45] WARNING: NEW FILE: /home/user/documents/new_document.txt
+[2025-08-27 12:48:12] CRITICAL: DELETED: /home/user/documents/important.key
+[2025-08-27 12:48:20] WARNING: MODIFIED: /home/user/documents/config.ini
 ```
 
 ## Educational Purpose
 
-This tool helps students understand:
-
+This tool helps cybersecurity professionals and enthusiasts understand:
 - **File System Security**: Learn how files can be monitored and protected
 - **Cryptographic Hashing**: Understand hash functions and their security applications
 - **Intrusion Detection**: Grasp the principles of detecting unauthorized system changes
@@ -151,7 +151,6 @@ This tool helps students understand:
 ## Security Considerations
 
 ⚠️ **Important Security Notes**
-
 - **Baseline Security**: Store baselines in secure, read-only locations
 - **Log Protection**: Protect log files from unauthorized access
 - **Performance Impact**: Monitor system resources during intensive scanning
@@ -168,7 +167,6 @@ This tool helps students understand:
 ## Contributing
 
 Contributions are welcome! Please:
-
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes with proper documentation
@@ -189,7 +187,3 @@ For questions, issues, or educational inquiries:
 - Open an issue on GitHub
 - Check the documentation wiki
 - Review existing issues before posting
-
----
-
-**Note for B.Tech Students**: This project complements your cybersecurity coursework by providing hands-on experience with file integrity monitoring, intrusion detection, and digital forensics. Always practice in controlled environments and follow your institution's ethical guidelines.
